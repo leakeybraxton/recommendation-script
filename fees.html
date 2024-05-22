@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Relax Reach Service Fee Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 5px;
+    }
+
+    input[type="number"] {
+      padding: 5px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Relax Reach Service Fee Calculator</h1>
+
+  <table>
+    <tr>
+      <td><label for="clv">Customer Lifetime Value (CLV):</label></td>
+      <td><input type="number" id="clv" step="100" value="1000" required></td>
+    </tr>
+    <tr>
+      <td><label for="cpa">Expected Cost Per Acquisition (CPA):</label></td>
+      <td><input type="number" id="cpa" step="50" value="200" required></td>
+    </tr>
+    <tr>
+      <td><label for="customers">Number of Customers Needed:</label></td>
+      <td><input type="number" id="customers" value="5" required></td>
+    </tr>
+  </table>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateServiceFee() {
+      const clv = parseFloat(document.getElementById('clv').value);
+      const cpa = parseFloat(document.getElementById('cpa').value);
+      const customers = parseInt(document.getElementById('customers').value);
+
+      const grossRoiPerCustomer = clv - cpa;
+      const roiPerMonth = grossRoiPerCustomer * customers;
+
+      let serviceFee = 1500 + Math.floor( (roiPerMonth * 0.2)/500 ) * 500;
+      if(roiPerMonth < 2500) serviceFee = 1500;
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <p>Gross ROI Per Customer After Ad Cost: $${grossRoiPerCustomer.toFixed(2)}</p>
+        <p>ROI Per Month: $${roiPerMonth.toFixed(2)}</p>
+        <p>Service Fee: $${serviceFee}</p>`;
+    }
+
+    // Increase CLV and CPA by $500 when the up arrow key is pressed
+    document.getElementById('clv').addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowUp') {
+        this.value = parseFloat(this.value) + 500;
+        calculateServiceFee();
+      }
+    });
+
+    document.getElementById('cpa').addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowUp') {
+        this.value = parseFloat(this.value) + 500;
+        calculateServiceFee();
+      }
+    });
+
+    // Calculate service fee when input values change
+    document.getElementById('clv').addEventListener('input', calculateServiceFee);
+    document.getElementById('cpa').addEventListener('input', calculateServiceFee);
+    document.getElementById('customers').addEventListener('input', calculateServiceFee);
+
+    // Initial calculation
+    calculateServiceFee();
+  </script>
+</body>
+</html>
