@@ -538,7 +538,7 @@ ul.listc li::marker {
 }
 @media only screen and (min-width: 375px) and (orientation: portrait) {
     .sc-chat-window {
-        width: 370px !important;
+        width: 350px !important;
         height: calc(100% - 120px) !important;
         max-height: 590px !important;
         position: fixed !important;
