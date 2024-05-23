@@ -9,7 +9,7 @@ $lead = false;
 if (isset($_SESSION['loaded_lead_id'])) {
     $leadRow = sb_db_get("SELECT *
     FROM `$tableName`
-    WHERE id=" . $_SESSION['loaded_lead_id'] . " and `locked_status` = 1 LIMIT 1");
+    WHERE id=" . $_SESSION['loaded_lead_id'] . " and ( `locked_status` is NULL or `locked_status` = 1) LIMIT 1");
     if ($leadRow && isset($leadRow['id'])) {
         $lead = $leadRow;
     }
@@ -83,10 +83,13 @@ require("header.php");
 </div>
 
 <!-- -------------------section-1----------------- -->
-<div class="container relax-sct-1">
-    <div class="reach_sctonce" id="modalContent">
+<div class="container mt-5">
+    <div id="modalContent">
 
     </div>
+</div>
+<div class="container">
+    <div id="modalContent2" class="mt-3 mb-5"></div>
 </div>
 <!-- ---------------------------section-3--------------------------->
 <div class="containe-fluid">
@@ -458,7 +461,6 @@ require("header.php");
 
     </div>
 </div>
-<div id="modalContent2"></div>
 <!-- ------------------------------------footer----------------------------- -->
 <script src="<?= $sub_dir ?>/admin/script.js"></script>
 <script src="https://app.aminos.ai/js/chat_plugin.js" data-bot-id="23074"></script>
@@ -489,11 +491,42 @@ require("header.php");
         let call_history = <?= !empty($leadbackup['call_history']) ? $leadbackup['call_history'] : '[]' ?>;
         var modalContent = displayLeadData(rowData);
         $('#modalContent').html(modalContent);
-        $.each(call_history, function(i, v) {
-            var modalContent2 = displayLeadData(v, false, 'col-12', 1);
-            $('#modalContent2').append('<h3 class="text-center mt-3">Call History ' + (i + 1) + '</h3>');
-            $('#modalContent2').append(modalContent2);
-        });
+        $('#modalContent2').append('<h3 class="text-center">Call History</h3>');
+
+        if (call_history.length === 0) {
+            $('#modalContent2').append('<p class="text-center">No call history found.</p>');
+        } else {
+            var table = $('<table class="table table-striped"></table>');
+            var thead = $('<thead></thead>');
+            var tbody = $('<tbody></tbody>');
+
+            thead.append('<tr><th>Call Time</th><th>Picked Up</th><th>Pitched</th><th>Call End Result</th></tr>');
+            table.append(thead);
+
+            $.each(call_history, function(i, v) {
+                var callTimestamp = v.time || '';
+                var pickedUp = v.picked_up == 'Yes' ? 'Picked Up' : (v.picked_up || '');
+                var pitched = v.pitched || '';
+                var callEndResult = v.call_end_result || '';
+                if (callTimestamp) {
+                    callTimestamp = timestampToHumanTime(parseInt(callTimestamp) * 1000);
+                }
+                var row = $('<tr></tr>');
+                row.append('<td>' + callTimestamp + '</td>');
+                row.append('<td>' + pickedUp + '</td>');
+                row.append('<td>' + pitched + '</td>');
+                row.append('<td>' + callEndResult + '</td>');
+
+                // Append the row to the table body
+                tbody.append(row);
+            });
+
+            // Append the table body to the table
+            table.append(tbody);
+
+            // Append the table to the modal content
+            $('#modalContent2').append(table);
+        }
 
 
         $('form').on('submit', function(event) {
