@@ -4,6 +4,10 @@ require("config.php");
 require("includes/sql_functions.php");
 global $SB_CONNECTION;
 sb_db_connect();
+
+if (isset($_GET['next'])) {
+    unset($_SESSION['loaded_lead_id']);
+}
 $tableName = 'leads';
 $lead = false;
 if (isset($_SESSION['loaded_lead_id'])) {
@@ -49,7 +53,7 @@ if (isset($_SESSION['loaded_lead_id'])) {
     }
 }
 if (!$lead) {
-    echo "No Lead.<br>";
+    header('location: callsubmit.php');
     exit;
 }
 $leadbackup = $lead;
@@ -483,6 +487,19 @@ require("header.php");
     .text-light {
         line-height: 1;
         color: #ddd;
+    }
+
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    table td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        word-break: break-all;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 </style>
 <script>
