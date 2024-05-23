@@ -54,12 +54,12 @@ if (isset($_POST['upload']) && isset($_FILES['csvFiles'])) {
                         }
                         if (
                             (isset($d['pitched']) && checkValueIfForQueue($d['pitched'])) ||
-                            (isset($d['pickedUp']) && checkValueIfForQueue($d['pickedUp'])) ||
-                            (isset($d['callEndResult']) && checkValueIfForQueue($d['callEndResult']))
+                            (isset($d['picked_up']) && checkValueIfForQueue($d['picked_up'])) ||
+                            (isset($d['call_end_result']) && checkValueIfForQueue($d['call_end_result']))
                         ) {
                             $d['locked_status'] = 2; //do not call again if not intarested/already called
                         }
-
+                        $d['imported_time'] = time();
                         if (isset($d['phone_number']) && strlen($d['phone_number']) == 10) {
                             $d['phone_number'] = '+1' . $d['phone_number'];
                         }
@@ -138,7 +138,7 @@ require("../header.php");
                     <?php
                     $existingColumns = getExistingColumns($tableName);
                     foreach ($existingColumns as $col) {
-                        if ('callHistory' == $col) {
+                        if ('call_history' == $col) {
                             echo "<th data-hide=\"true\">" . $col . "</th>";
                         } else {
                             echo "<th>" . $col . "</th>";
@@ -160,7 +160,7 @@ require("../header.php");
 
                 // Generate input fields dynamically
                 columnNames.forEach((columnName, index) => {
-                    if (columnName != 'callHistory') {
+                    if (columnName != 'call_history') {
                         inputFields += '<div class="form-group mb-3' + (columnName == 'id' ? ' d-none' : '') + '"><label for="' + columnName + '">' + columnName + ': </label>';
                         inputFields += '<input class="form-control" type="' + (columnName == 'id' ? 'hidden' : 'text') + '" id="' + columnName + '" name="' + columnName + '" value="' + ((rowData[index] == null || rowData[index] == 'null') ? '' : rowData[index]) + '"></div>';
                     }
@@ -172,17 +172,17 @@ require("../header.php");
             }
 
             function loadHistory() {
-                if (!window.callHistory) {
+                if (!window.call_history) {
                     alert('no history');
                     return false;
                 }
-                let callHistory = JSON.parse(window.callHistory);
-                if (!callHistory) {
+                let call_history = JSON.parse(window.call_history);
+                if (!call_history) {
                     alert('error in json');
                     return false;
                 }
                 $('#modalContent').html('');
-                $.each(callHistory, function(i, v) {
+                $.each(call_history, function(i, v) {
                     var modalContent2 = displayLeadData(v, false, 'col-12', 1);
                     $('#modalContent').append('<h3 class="text-center mt-3">Call History ' + (i + 1) + '</h3>');
                     $('#modalContent').append(modalContent2);
@@ -207,7 +207,10 @@ require("../header.php");
                 dataTable = $('#dataTable').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "lengthMenu": [200, 500, 1000, 2000, 5000],
+                    "lengthMenu": [
+                        [200, 500, 1000, 2000, -1],
+                        [200, 500, 1000, 2000, "All"]
+                    ],
                     "pageLength": 200,
                     "scrollX": true, // Enable horizontal scrolling if needed
                     "ajax": {

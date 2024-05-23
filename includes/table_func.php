@@ -28,7 +28,7 @@ function getExistingColumns($tableName)
 
 function convertToSlug($string)
 {
-    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $string)));
+    $slug = trim(strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $string))), '_');
     if ($slug == 'name') {
         $slug = 'company_name';
     } elseif ($slug == 'phone') {

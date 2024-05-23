@@ -98,9 +98,9 @@ require("header.php");
                         <form class="needs-validation" novalidate method="POST" action="callsubmit.php">
                             <input type="hidden" name="id" value="<?= $lead['id'] ?>">
                             <div class="form-group ">
-                                <label for="appointmentSetter"><u>Appointment Setter</u> *</label>
+                                <label for="appointment_setter"><u>Appointment Setter</u> *</label>
                                 <small class="form-text text-muted text-light">Always use the same name, please.</small>
-                                <input type="text" class="form-control" id="appointmentSetter" name="appointmentSetter" required>
+                                <input type="text" class="form-control" id="appointment_setter" name="appointment_setter" required>
                             </div>
 
 
@@ -122,36 +122,36 @@ require("header.php");
                             </div>
 
                             <div class="form-group mb-5">
-                                <label for="pickedUp">Picked Up?</label><br>
+                                <label for="picked_up">Picked Up?</label><br>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpYes" value="Yes" required>
-                                    <label class="form-check-label" for="pickedUpYes">Yes, Continue</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upYes" value="Yes" required>
+                                    <label class="form-check-label" for="picked_upYes">Yes, Continue</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpEmail" value="Send Email" required>
-                                    <label class="form-check-label" for="pickedUpEmail">Send Email</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upEmail" value="Email Request" required>
+                                    <label class="form-check-label" for="picked_upEmail">Email Request</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpVoicemail" value="Voicemail" required>
-                                    <label class="form-check-label" for="pickedUpVoicemail">Voicemail</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upVoicemail" value="Voicemail" required>
+                                    <label class="form-check-label" for="picked_upVoicemail">Voicemail</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpNotInterested" required value="Not Interested / Hung Up">
-                                    <label class="form-check-label" for="pickedUpNotInterested">Not Interested / Hung Up</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upNotInterested" required value="Not Interested / Hung Up">
+                                    <label class="form-check-label" for="picked_upNotInterested">Not Interested / Hung Up</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpBusy" required value="Decision-Maker Busy / Unreachable">
-                                    <label class="form-check-label" for="pickedUpBusy">Decision-Maker Busy / Unreachable</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upBusy" required value="Decision-Maker Busy / Unreachable">
+                                    <label class="form-check-label" for="picked_upBusy">Decision-Maker Busy / Unreachable</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" id="pickedUpOut" required value="Invalid Number / Out Of Business">
-                                    <label class="form-check-label" for="pickedUpOut">Invalid Number / Out Of Business</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" id="picked_upOut" required value="Invalid Number / Out Of Business">
+                                    <label class="form-check-label" for="picked_upOut">Invalid Number / Out Of Business</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pickedUp" required id="pickedUpOther" value="Other">
-                                    <label class="form-check-label" for="pickedUpOther">Other:</label>
+                                    <input class="form-check-input" type="radio" name="picked_up" required id="picked_upOther" value="Other">
+                                    <label class="form-check-label" for="picked_upOther">Other:</label>
                                 </div>
-                                <textarea class="form-control mt-2" id="pickedUpOtherInput" name="pickedUpOtherInput" style="display: none;" placeholder="Specify (e.g. Call back at 3pm on June 7, 2024)"></textarea>
+                                <textarea class="form-control mt-2" id="picked_upOtherInput" name="picked_upOtherInput" style="display: none;" placeholder="Specify (e.g. Call back at 3pm on June 7, 2024)"></textarea>
                             </div>
 
 
@@ -171,8 +171,8 @@ require("header.php");
                                     <label class="form-check-label" for="pitchedYes">Yes, Continue</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="pitched" id="pitchedEmail" value="Send Email" required>
-                                    <label class="form-check-label" for="pitchedEmail">Send Email</label>
+                                    <input class="form-check-input" type="radio" name="pitched" id="pitchedEmail" value="Email Request" required>
+                                    <label class="form-check-label" for="pitchedEmail">Email Request</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="pitched" id="pitchedNotInterested" value="Not Interested" required>
@@ -322,22 +322,22 @@ require("header.php");
                             <div class="form-group">
                                 <label for="result">Result:</label><br>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="callEndResult" id="callEndResultME" value="Scheduled Meeting" required>
-                                    <label class="form-check-label" for="callEndResultME">Scheduled Meeting</label>
+                                    <input class="form-check-input" type="radio" name="call_end_result" id="call_end_resultME" value="Scheduled Meeting" required>
+                                    <label class="form-check-label" for="call_end_resultME">Scheduled Meeting</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="callEndResult" id="callEndResultDC" value="Scheduled Discovery Call" required>
-                                    <label class="form-check-label" for="callEndResultDC">Scheduled Discovery Call</label>
+                                    <input class="form-check-input" type="radio" name="call_end_result" id="call_end_resultDC" value="Scheduled Discovery Call" required>
+                                    <label class="form-check-label" for="call_end_resultDC">Scheduled Discovery Call</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="callEndResult" id="callEndResultNI" value="Not Interested" required>
-                                    <label class="form-check-label" for="callEndResultNI">Not Interested</label>
+                                    <input class="form-check-input" type="radio" name="call_end_result" id="call_end_resultNI" value="Not Interested" required>
+                                    <label class="form-check-label" for="call_end_resultNI">Not Interested</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="callEndResult" id="callEndResultOther" value="Other" required>
-                                    <label class="form-check-label" for="callEndResultOther">Other:</label>
+                                    <input class="form-check-input" type="radio" name="call_end_result" id="call_end_resultOther" value="Other" required>
+                                    <label class="form-check-label" for="call_end_resultOther">Other:</label>
                                 </div>
-                                <textarea class="form-control mt-2" id="callEndResultInput" name="callEndResultInput" style="display: none;" placeholder="Specify"></textarea>
+                                <textarea class="form-control mt-2" id="call_end_resultInput" name="call_end_resultInput" style="display: none;" placeholder="Specify"></textarea>
                             </div>
                             <hr class="my-5">
                             <div class="form-group mb-3">
@@ -370,11 +370,11 @@ require("header.php");
 
                 <div class="col-md-5 pe-4">
                     <p class="cfs-52 mb-3 text-center" style="padding: 10px;border: 2px solid #fff;">Schedule Sales Meeting</p>
-                    <div style="width:100%;height:1000px;overflow:scroll" id="salesmeeting-inline"></div>
-                    <div class="alert alert-info mb-5 mt-3">Confirm the correct timezone with the prospect !</div>
+                    <div class="alert alert-info mb-5 mt-3">! Confirm the correct timezone with the prospect !</div>
+                    <div style="width:100%;height:1000px;overflow:scroll !important" id="salesmeeting-inline"></div>
                     <p class="cfs-52 mb-3 text-center" style="padding: 10px;border: 2px solid #fff;">Schedule Discovery Call</p>
-                    <div style="width:100%;height:1000px;overflow:scroll" id="dc-inline"></div>
-                    <div class="alert alert-info mb-5 mt-3">Confirm the correct timezone with the prospect !</div>
+                    <div style="width:100%;height:1000px;overflow:scroll !important" id="dc-inline"></div>
+                    <div class="alert alert-info mb-5 mt-3">! Confirm the correct timezone with the prospect !</div>
 
 
                     <script type="text/javascript">
@@ -486,10 +486,10 @@ require("header.php");
 <script>
     $(document).ready(function() {
         let rowData = <?= json_encode($lead) ?>;
-        let callHistory = <?= !empty($leadbackup['callHistory']) ? $leadbackup['callHistory'] : '[]' ?>;
+        let call_history = <?= !empty($leadbackup['call_history']) ? $leadbackup['call_history'] : '[]' ?>;
         var modalContent = displayLeadData(rowData);
         $('#modalContent').html(modalContent);
-        $.each(callHistory, function(i, v) {
+        $.each(call_history, function(i, v) {
             var modalContent2 = displayLeadData(v, false, 'col-12', 1);
             $('#modalContent2').append('<h3 class="text-center mt-3">Call History ' + (i + 1) + '</h3>');
             $('#modalContent2').append(modalContent2);
@@ -504,11 +504,11 @@ require("header.php");
                 form.addClass('was-validated');
             }
         });
-        $('input[name="pickedUp"]').change(function() {
+        $('input[name="picked_up"]').change(function() {
             if ($(this).val() === 'Other') {
-                $('#pickedUpOtherInput').show();
+                $('#picked_upOtherInput').show();
             } else {
-                $('#pickedUpOtherInput').hide().val('');
+                $('#picked_upOtherInput').hide().val('');
             }
         });
 
@@ -519,11 +519,11 @@ require("header.php");
                 $('#pitchedOtherInput').hide().val('');
             }
         });
-        $('input[name="callEndResult"]').change(function() {
+        $('input[name="call_end_result"]').change(function() {
             if ($(this).val() === 'Other') {
-                $('#callEndResultInput').show();
+                $('#call_end_resultInput').show();
             } else {
-                $('#callEndResultInput').hide().val('');
+                $('#call_end_resultInput').hide().val('');
             }
         });
         $('input[name="workedWithAgencyBefore"]').change(function() {

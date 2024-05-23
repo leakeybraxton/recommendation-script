@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 // Report all errors except E_WARNING
-error_reporting(E_ALL & ~E_WARNING);
+error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED);
 
 // Google Apps Script Web App URL
 $googleAppsScriptURL = "https://script.google.com/macros/s/AKfycbz-Ty5jUSwk9Ji2WUjxlSaM4aBb8mNDnm4wI1CJMwENc5kK6IJbaR39HNqhOwyBs03X/exec";

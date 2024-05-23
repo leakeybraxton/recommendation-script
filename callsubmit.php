@@ -16,63 +16,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('No ID provided.');
     }
 
-    if ($postData['pickedUp'] == 'Other') {
-        $postData['pickedUp'] = $postData['pickedUpOtherInput'];
-        unset($postData['pickedUpOtherInput']);
+    if ($postData['picked_up'] == 'Other') {
+        $postData['picked_up'] = $postData['picked_upOtherInput'];
+        unset($postData['picked_upOtherInput']);
     }
     if ($postData['pitched'] == 'Other') {
         $postData['pitched'] = $postData['pitchedOtherInput'];
         unset($postData['pitchedOtherInput']);
     }
-    if ($postData['callEndResult'] == 'Other') {
-        $postData['callEndResult'] = $postData['callEndResultInput'];
-        unset($postData['callEndResultInput']);
+    if ($postData['call_end_result'] == 'Other') {
+        $postData['call_end_result'] = $postData['call_end_resultInput'];
+        unset($postData['call_end_resultInput']);
     }
 
     $updateColumns = [];
-    $callHistoryNewEntry = [];
+    $call_historyNewEntry = [];
     foreach ($postData as $key => $value) {
         if (in_array($key, $tableColumns)) {
             $updateColumns[$key] = $value;
         }
-        $callHistoryNewEntry[$key] = $value;
+        $call_historyNewEntry[$key] = $value;
     }
 
     $updateColumns['locked_status'] = 2; //disable load again
-    $callHistoryNewEntry['time'] = time();
+    $call_historyNewEntry['time'] = time();
     $SB_CONNECTION->begin_transaction();
 
 
     try {
-        $query = "SELECT `callHistory` FROM `$tableName` WHERE `id` = $leadId FOR UPDATE";
+        $query = "SELECT `call_history` FROM `$tableName` WHERE `id` = $leadId FOR UPDATE";
         $result = $SB_CONNECTION->query($query);
-        $existingCallHistory = [];
+        $existingcall_history = [];
 
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            if ($row['callHistory'] == null) {
-                $row['callHistory'] = '';
+            if ($row['call_history'] == null) {
+                $row['call_history'] = '';
             }
-            $existingCallHistory = json_decode($row['callHistory'], true) ?: [];
+            $existingcall_history = json_decode($row['call_history'], true) ?: [];
         }
 
-        $existingCallHistory[] = $callHistoryNewEntry;
-        $callHistoryJson = json_encode($existingCallHistory);
+        $existingcall_history[] = $call_historyNewEntry;
+        $call_historyJson = json_encode($existingcall_history);
 
         $updateSets = [];
         foreach ($updateColumns as $column => $value) {
             $escapedValue = $SB_CONNECTION->real_escape_string($value);
             $updateSets[] = "`$column` = '$escapedValue'";
         }
-        $updateSets[] = "`callHistory` = '" . $SB_CONNECTION->real_escape_string($callHistoryJson) . "'";
+        $updateSets[] = "`call_history` = '" . $SB_CONNECTION->real_escape_string($call_historyJson) . "'";
         $updateQuery = "UPDATE `$tableName` SET " . implode(', ', $updateSets) . " WHERE `id` = $leadId";
         $SB_CONNECTION->query($updateQuery);
 
 
         if (
             (isset($updateColumns['pitched']) && checkValueIfForQueue($updateColumns['pitched'])) ||
-            (isset($updateColumns['pickedUp']) && checkValueIfForQueue($updateColumns['pickedUp'])) ||
-            (isset($updateColumns['callEndResult']) && checkValueIfForQueue($updateColumns['callEndResult']))
+            (isset($updateColumns['picked_up']) && checkValueIfForQueue($updateColumns['picked_up'])) ||
+            (isset($updateColumns['call_end_result']) && checkValueIfForQueue($updateColumns['call_end_result']))
         ) {
             //do not call again if not intarested/already called
         } else {

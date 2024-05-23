@@ -1,7 +1,7 @@
 function displayLeadData(lead, cols = false, classs = 'col-md-6', tablecount = 2) {
     // Assuming 'lead' is an object with key-value pairs.
     if (lead) {
-        // Remove 'callHistory' from the lead object
+        // Remove 'call_history' from the lead object
 
         // Filter out empty values from the lead object
         lead = Object.fromEntries(Object.entries(lead).filter(([_, v]) => v != null && v !== '' && v !== '0'));
@@ -34,7 +34,7 @@ function displayLeadData(lead, cols = false, classs = 'col-md-6', tablecount = 2
 
         Object.entries(lead).forEach(([key, value]) => {
             key = cols ? cols[key] : key;
-            if (key != 'callHistory') {
+            if (key != 'call_history') {
                 const tr = document.createElement('tr');
                 const th = document.createElement('th');
                 th.textContent = key;
@@ -81,7 +81,7 @@ function displayLeadData(lead, cols = false, classs = 'col-md-6', tablecount = 2
                     table2.appendChild(tr);
                 }
             }else{
-                window.callHistory = value;
+                window.call_history = value;
             }
             i++;
         });
