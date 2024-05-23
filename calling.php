@@ -380,8 +380,8 @@ require("header.php");
                     <div class="alert alert-info mb-5 mt-3">! Confirm the correct timezone with the prospect !</div>
                     <div style="width:100%;height:1000px;overflow:scroll !important" id="salesmeeting-inline"></div>
                     <p class="cfs-52 mb-3 text-center" style="padding: 10px;border: 2px solid #fff;">Schedule Discovery Call</p>
-                    <div style="width:100%;height:1000px;overflow:scroll !important" id="dc-inline"></div>
                     <div class="alert alert-info mb-5 mt-3">! Confirm the correct timezone with the prospect !</div>
+                    <div style="width:100%;height:1000px;overflow:scroll !important" id="dc-inline"></div>
 
 
                     <script type="text/javascript">
