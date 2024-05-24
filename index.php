@@ -10,12 +10,12 @@
         <div class="hero_container">
             <div class="container hero_content">
                 <p>Effortless Business Growth:</p>
-                <h1>We Generate <span>High-Value</span> Leads <br> For Your <span>Wellness</span> Business</h1>
+                <h1>We Drive <span>High-Value</span> Customers <br> To Your <span>Wellness</span> Business</h1>
                 <p class="hero_tagline">Without Hassle on Your End</p>
             </div>
             <div class="hero_button">
                 <a href="#schedule" class="btn hero_btn">
-                    <h2>Get More Leads</h2>
+                    <h2>Get More Customers</h2>
                 </a>
             </div>
         </div>
@@ -120,7 +120,7 @@
                     <p class="cfs-4 text-center"><strong>THIS 15-MINUTE CALL IS PERFECT FOR:</strong></p><br>
                     <ul class="cfs-1 listc mt-3">
                         <li>
-                            <p>Wellness businesses looking to consistently and reliably get <strong> more leads.</strong></p>
+                            <p>Wellness businesses looking to consistently and reliably get <strong> more customers.</strong></p>
                         </li>
                         <li>
                             <p>Wellness businesses looking to take their offline business <strong>online.</strong></p>
