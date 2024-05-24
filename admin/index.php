@@ -92,7 +92,7 @@ require("../header.php");
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <style>
-    table.dataTable td {
+    table#dataTable td {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -104,18 +104,9 @@ require("../header.php");
         width: 100%;
     }
 
-    
-    #modalContent table {
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    #modalContent table td {
+    #modalContent td {
         padding-top: 10px;
         padding-bottom: 10px;
-        word-break: break-all;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
     }
 </style>
 

@@ -3,13 +3,10 @@
     margin: 0 auto;
     font-family: "Montserrat", sans-serif;
 }
-
-html,
-body {
+html,body{
     max-width: 100%;
     overflow-x: hidden;
 }
-
 :root {
     --mainc: #50C878;
 }
@@ -71,13 +68,11 @@ h1 {
     font-weight: 500;
     color: white;
 }
-
-p.hero_tagline {
+p.hero_tagline{
     font-size: 25px !important;
     font-weight: 500;
     color: white;
 }
-
 .hero_content h1 span {
     font-weight: bold;
     color: var(--mainc);
@@ -217,14 +212,11 @@ p.hero_tagline {
 }
 
 @media only screen and (max-width: 550px) {
-    #schedule .pe-4 {
-        padding-right: 15px !important;
+    #schedule .pe-4{
+    padding-right: 15px !important;
+    }#schedule .ps-4{
+    padding-left: 15px !important;
     }
-
-    #schedule .ps-4 {
-        padding-left: 15px !important;
-    }
-
     .reach_sctonce {
         margin: 0 10px;
     }
@@ -287,12 +279,10 @@ p.hero_tagline {
     .boxes {
         flex-wrap: wrap;
     }
-
     .number h2 {
         padding-top: 21px;
     }
 }
-
 @media only screen and (max-width: 550px) {
 
 
@@ -301,8 +291,7 @@ p.hero_tagline {
         margin-top: 35px;
         margin-bottom: 35px;
     }
-
-    .cal-inline-container {
+    .cal-inline-container{
         margin-top: 35px;
         margin-bottom: 35px;
     }
@@ -350,13 +339,9 @@ p.hero_tagline {
 }
 
 @media only screen and (max-width: 550px) {
-
-    .center-on-mobile,
-    .center-on-mobile+p,
-    .relaxereachprt3 p.cfs-2.mb-3 {
-        text-align: center;
-    }
-
+.center-on-mobile, .center-on-mobile + p, .relaxereachprt3 p.cfs-2.mb-3{
+    text-align: center;
+}
     .relaxereachprt3 {
         width: 100%;
         padding: 40px 10px;
@@ -423,11 +408,9 @@ p.hero_tagline {
         flex-direction: column;
         gap: 20px;
     }
-
-    .footer_reach_top .footer_boxed:last-child {
-        margin-bottom: 40px
-    }
-
+.footer_reach_top .footer_boxed:last-child{
+ margin-bottom:40px      
+}
     .reach_footer-logo img {
         width: 60.5%;
     }
@@ -439,8 +422,7 @@ p.hero_tagline {
     overflow: hidden !important;
     border: 1px solid #10182826
 }
-
-.cal-inline-container {
+.cal-inline-container{
     border-radius: .5rem;
     overflow: hidden !important;
     border: 1px solid #10182826;
@@ -513,7 +495,6 @@ ul.listc li::marker {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, .4);
     font-size: 42px;
 }
-
 .cfs-52 {
     line-height: 1.3em;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, .4);
@@ -541,11 +522,9 @@ ul.listc li::marker {
     background-color: var(--mainc);
     border-color: var(--mainc);
 }
-
 .progress-bar {
     background-color: var(--mainc);
 }
-
 .form-inline {
     display: flex;
     align-items: center;
@@ -554,16 +533,16 @@ ul.listc li::marker {
     justify-content: center;
     padding: 20px;
 }
-
-.form-inline input {
+.form-inline input{
     max-width: 250px;
 }
-
-.sc-chat-window {
-    width: 320px !important;
-    height: calc(100% - 120px) !important;
-    max-height: 590px !important;
-    position: fixed !important;
-    right: 25px !important;
-    bottom: 100px !important;
+@media only screen and (min-width: 375px) and (orientation: portrait) {
+    .sc-chat-window {
+        width: 370px !important;
+        height: calc(100% - 120px) !important;
+        max-height: 590px !important;
+        position: fixed !important;
+        right: 25px !important;
+        bottom: 100px !important;
+    }
 }

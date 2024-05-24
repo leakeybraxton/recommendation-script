@@ -110,7 +110,7 @@ require("header.php");
         <?php if (!empty($message)) : ?>
             <div class="alert alert-info my-5"><?php echo $message; ?></div>
         <?php endif; ?>
-        <a href="<?= $sub_dir ?>/calling.php?next=true" class="btn btn-primary mb-5">Next Lead >></a>
+        <a href="<?= $sub_dir ?>/calling.php" class="btn btn-primary mb-5">Next Lead >></a>
     </div>
 </div>
 <div>

@@ -37,7 +37,7 @@ function displayLeadData(lead, cols = false, classs = 'col-md-6', tablecount = 2
             if (key != 'call_history') {
                 const tr = document.createElement('tr');
                 const th = document.createElement('th');
-                th.textContent = slugToText(key);
+                th.textContent = key;
                 const td = document.createElement('td');
                 let cond = key.toLowerCase();
 
@@ -80,7 +80,7 @@ function displayLeadData(lead, cols = false, classs = 'col-md-6', tablecount = 2
                 } else {
                     table2.appendChild(tr);
                 }
-            } else {
+            }else{
                 window.call_history = value;
             }
             i++;
@@ -114,13 +114,3 @@ function timestampToHumanTime(timestamp) {
 }
 
 
-function slugToText(slug) {
-    // Replace hyphens with spaces and split the string into words
-    let words = slug.replace(/-/g, ' ').replace(/_/g, ' ').split(' ');
-
-    // Capitalize the first letter of each word
-    let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-
-    let readableText = capitalizedWords.join(' ');
-    return readableText;
-}
