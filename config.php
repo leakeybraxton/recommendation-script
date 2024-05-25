@@ -40,4 +40,4 @@ define('SB_DB_PASSWORD', '');
 define('SB_DB_HOST', 'localhost');
 
 /* MySQL port (optional) */
-define('SB_DB_PORT', '');
+define('SB_DB_PORT', '8080');
