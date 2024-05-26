@@ -1,7 +1,6 @@
 <?php require("header.php") ?>
 <style>
     @media (max-width: 767px) {
-    #my-cal-inline {  }
 }
 </style>
 <!-- --------------------------Hero Section----------------------- -->
