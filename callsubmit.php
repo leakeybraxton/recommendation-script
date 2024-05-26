@@ -16,19 +16,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('No ID provided.');
     }
 
-    if ($postData['picked_up'] == 'Other') {
-        $postData['picked_up'] = $postData['picked_upOtherInput'];
-        unset($postData['picked_upOtherInput']);
-    }
-    if ($postData['pitched'] == 'Other') {
-        $postData['pitched'] = $postData['pitchedOtherInput'];
-        unset($postData['pitchedOtherInput']);
-    }
-    if ($postData['call_end_result'] == 'Other') {
-        $postData['call_end_result'] = $postData['call_end_resultInput'];
-        unset($postData['call_end_resultInput']);
+    //check if the lead was skipped
+    if(isset($postData['skipped'])){
+        if ($postData['skipped'] == 'Other') {
+            $postData['skipped'] = $postData['skipOtherInput'];
+            unset($postData['skipOtherInput']);
+        } 
+
+       
+    }else{
+
+        if ($postData['picked_up'] == 'Other') {
+            $postData['picked_up'] = $postData['picked_upOtherInput'];
+            unset($postData['picked_upOtherInput']);
+        }
+        if ($postData['pitched'] == 'Other') {
+            $postData['pitched'] = $postData['pitchedOtherInput'];
+            unset($postData['pitchedOtherInput']);
+        }
+        if ($postData['call_end_result'] == 'Other') {
+            $postData['call_end_result'] = $postData['call_end_resultInput'];
+            unset($postData['call_end_resultInput']);
+        }
+    
+
     }
 
+    
     $updateColumns = [];
     $call_historyNewEntry = [];
     foreach ($postData as $key => $value) {
@@ -38,7 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $call_historyNewEntry[$key] = $value;
     }
 
-    $updateColumns['locked_status'] = 2; //disable load again
+    if(!isset($postData['skipped'])){
+        $updateColumns['locked_status'] = 2; //disable load again
+    }
     $call_historyNewEntry['time'] = time();
     $SB_CONNECTION->begin_transaction();
 
@@ -80,8 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $queueRow = $queueResult->fetch_assoc();
             $newQueue = $queueRow['max_queue'] + 1;
 
-            $queueUpdateQuery = "UPDATE `$tableName` SET `locked_status` = NULL, `queue` = $newQueue WHERE `id` = $leadId";
+
+
+            $queueUpdateQuery = "UPDATE `$tableName` SET `locked_status` = NULL, `queue` = $newQueue WHERE `id` = $leadId";            
+            
             $SB_CONNECTION->query($queueUpdateQuery);
+            
         }
 
         $SB_CONNECTION->commit();

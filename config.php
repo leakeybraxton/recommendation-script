@@ -29,10 +29,10 @@ function decrypt($ciphertext_base64, $key) {
 define('SB_DB_NAME', 'u956006469_rr_leads');
 
 /* MySQL database username */
-define('SB_DB_USER', 'u956006469_rr_leads');
+define('SB_DB_USER', 'root');
 
 /* MySQL database password */
-define('SB_DB_PASSWORD', 'v0:n$+oPz6#');
+define('SB_DB_PASSWORD', '');
 
 /* MySQL hostname */
 define('SB_DB_HOST', 'localhost');
