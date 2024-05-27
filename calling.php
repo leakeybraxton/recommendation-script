@@ -8,6 +8,8 @@ sb_db_connect();
 if (isset($_GET['next'])) {
     unset($_SESSION['loaded_lead_id']);
 }
+
+
 $tableName = 'leads';
 $lead = false;
 if (isset($_SESSION['loaded_lead_id'])) {
@@ -102,7 +104,7 @@ require("header.php");
             <div class="row" id="schedule">
                 <div class="col-md-7 ps-4">
                     <div class="container p-5 caller">
-                        <form class="needs-validation" novalidate method="POST" action="callsubmit.php">
+                        <form class="needs-validation" novalidate method="POST" action="callsubmit.php" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="<?= $lead['id'] ?>">
                             <div class="form-group ">
                                 <label for="appointment_setter"><u>Appointment Setter</u> *</label>
@@ -362,10 +364,14 @@ require("header.php");
                                 <small class="form-text text-muted text-light">Automatically inserted, please confirm.</small>
                                 <input type="email" class="form-control" id="contactEmail" placeholder="Enter email" name="contactEmail" value="<?= $leadbackup['email'] ?>">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="contactPhone" class="mb-0">Contact Person Phone Number</label>
                                 <small class="form-text text-muted text-light">Automatically inserted, please confirm.</small>
                                 <input type="text" class="form-control" id="contactPhone" placeholder="Enter phone number" name="contactPhone" value="<?= $leadbackup['phone_number'] ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="uploadCall">Call Upload :      </label>
+                                <input type="file" name="uploadCall" id="uploadCall">
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Submit</button>
                         </form>
@@ -373,6 +379,7 @@ require("header.php");
 
                     <br>
                     <p class="text-center">Step 2: Rename your successful call to "Company Name - Date" and upload it here: <a href="https://drive.google.com/open?id=1--9KWLaLemCZgp5QA7JAe0ja5BwryAd8" target="_blank">Recordings</a></p><br>
+                    
                 </div>
 
                 <div class="col-md-5 pe-4">
@@ -553,7 +560,7 @@ require("header.php");
         }
 
         // Add a button to trigger pop up modal onclick
-        $('#modalContent2').append('<a data-toggle="modal" data-target="#skipModal" href="" class="skip-btn btn-danger btn-sm rounded-pill ">Skip Lead</a>');
+        $('#modalContent2').append('<button type="button" class="btn btn-primary" onclick="showSkipModal()">Skip Lead</button>');
 
         $('form').on('submit', function(event) {
             const form = $(this);
@@ -601,37 +608,45 @@ require("header.php");
         });
     });
 
+    //function to display modal
+    function showSkipModal() {
+        $('#skipModal').modal('show');
+    }
+
     
 </script>
 
-<!-- Skip Lead Modal -->
-<div id="skipModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Skip Lead</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" id="transfer" name="transfer" action="callsubmit.php">                        
 
-                        <input type="hidden" name="id" value="<?= $lead['id'] ?>">
-                        <div class="form-group">
-                            <label>Reason for Skipping</label><br>
-                            <input type="radio" name="skipped" id="skipped" value="Lead Not in Target Market"> Lead Not in Target Market <br>                                                        
-                            <input type="radio" name="skipped" id="skipped" value="Other"> Other <br>                                                        
-                            <textarea class="form-control mt-2" id="skipOtherInput" name="skipOtherInput" style="display: none;" placeholder="Specify (e.g. Call back at 3pm on June 7, 2024)"></textarea>
-                        </div>  
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" id="Transfer" name="Transfer" class="btn btn-primary btn-sm rounded-pill">Continue</button>
-                    </form>
-                </div>
+    <!-- Skip Lead Modal -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<?= $sub_dir ?>/admin/script.js"></script>
+<div class="modal fade" id="skipModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Skip Lead</h4> &nbsp;&nbsp;
+                
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="transfer" name="transfer" action="callsubmit.php">                        
+                    
+                    <input type="hidden" name="id" value="<?= $lead['id'] ?>">
+                    <div class="form-group">
+                        <label>Reason for Skipping</label><br>
+                        <input type="radio" name="skipped" id="skipped" value="Lead Not in Target Market"> Lead Not in Target Market <br>                                                        
+                        <input type="radio" name="skipped" id="skipped" value="Other"> Other <br>                                                        
+                        <textarea class="form-control mt-2" id="skipOtherInput" name="skipOtherInput" style="display: none;" width="100" placeholder="Specify (e.g. Call back at 3pm on June 7, 2024)"></textarea>
+                    </div>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="Transfer" name="Transfer" class="btn btn-primary btn-sm rounded-pill">Continue</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
     <!-- End of modal -->
 
 <?php require('footer.php') ?>

@@ -52,11 +52,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $call_historyNewEntry[$key] = $value;
     }
 
+    //capture the audio file from the form
+    $audio_file = $_FILES["uploadCall"];  
+    
+    // Allowed file types
+    $allowed_types = ["audio/mpeg", "audio/mp3", "audio/wav"];
+    
+    
+    $companyNameQuery = "SELECT `company_name` FROM `$tableName` WHERE `id` = $leadId FOR UPDATE";
+    $companyNameResult = $SB_CONNECTION->query($companyNameQuery);
+    $companyNameRow = $companyNameResult->fetch_assoc();    
+   
+    //authenticate the type of the file
+    if (in_array($audio_file["type"], $allowed_types)) {
+
+        // Move the uploaded file to the server
+        $directory = "public/calls/";
+        $fileName = $companyNameRow['company_name']." - ".time();
+        $target_file = $directory . $fileName . basename($audio_file["name"]);      
+
+        move_uploaded_file($audio_file["tmp_name"], $target_file);
+
+        $updateColumns['call_name'] = $fileName." - ".basename($audio_file["name"]);       
+        
+    }
+
     if(!isset($postData['skipped'])){
         $updateColumns['locked_status'] = 2; //disable load again
     }
     $call_historyNewEntry['time'] = time();
-    $SB_CONNECTION->begin_transaction();
+    $SB_CONNECTION->begin_transaction(); 
 
 
     try {
@@ -69,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($row['call_history'] == null) {
                 $row['call_history'] = '';
             }
-            $existingcall_history = json_decode($row['call_history'], true) ?: [];
+            $existingcall_history = json_decode($row['call_history'], true) ?: [];           
         }
 
         $existingcall_history[] = $call_historyNewEntry;
@@ -83,6 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateSets[] = "`call_history` = '" . $SB_CONNECTION->real_escape_string($call_historyJson) . "'";
         $updateQuery = "UPDATE `$tableName` SET " . implode(', ', $updateSets) . " WHERE `id` = $leadId";
         $SB_CONNECTION->query($updateQuery);
+
+        
 
 
         if (
@@ -100,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $queueUpdateQuery = "UPDATE `$tableName` SET `locked_status` = NULL, `queue` = $newQueue WHERE `id` = $leadId";            
             
-            $SB_CONNECTION->query($queueUpdateQuery);
+            $SB_CONNECTION->query($queueUpdateQuery);            
             
         }
 
