@@ -49,7 +49,6 @@ function displayLeadData(
         th.textContent = slugToText(key);
         const td = document.createElement("td");
         let cond = key.toLowerCase();
-        console.log(cond);
 
         // Create clickable links for specific fields
         if (cond.startsWith("address") || cond.endsWith("address")) {
@@ -144,6 +143,36 @@ function displayLeadDataImproved(
           value !== "0"
       )
     );
+    //items list for showing in three columns under the appointmnet section
+    const ColItem1 = [
+      "company_name",
+      "category",
+      "revenue",
+      "company_type",
+      "company_size",
+      "appeared_on",
+      "address",
+      "state",
+      "founded",
+      "years_in_business",
+    ];
+    const ColItem2 = ["first_name", "contact_job_title", "phone_number"];
+    const ColItem3 = [
+      "bbb_profile",
+      "fb_url",
+      "fb_rating",
+      // "fb_likes",
+      // "fb_reviews",
+      "is_facebook_ads",
+      "is_adwords",
+      "instagram_url",
+      "twitter_url",
+      "twitter_ads",
+      "linkedin_url",
+      "linkedin_ads",
+      "youtube_url",
+      "bing_ads",
+    ];
 
     const container = document.createElement("div");
     container.className = "container";
@@ -158,6 +187,19 @@ function displayLeadDataImproved(
       const col = document.createElement("div");
       col.className = classs;
       row.appendChild(col);
+      //adding header just for 3 columns leads data
+      if (tablecount === 3) {
+        const head = document.createElement("div");
+        head.className = "col text-center h4 mb-3";
+        col.appendChild(head);
+        if (i === 0) {
+          head.textContent = "Company Information";
+        } else if (i === 1) {
+          head.textContent = "Contact Information";
+        } else if (i === 2) {
+          head.textContent = "Online Presence";
+        }
+      }
 
       const table = document.createElement("table");
       table.className = "table table-bordered";
@@ -208,7 +250,7 @@ function displayLeadDataImproved(
         a.target = "_blank";
         td.appendChild(a);
       } else if (cond === "is_facebook_ads") {
-        td.textContent = value === "1" ? "Yes" : "No";
+        td.textContent = value === "1" ? "XYZ" : "";
       } else {
         td.textContent = value;
       }
@@ -216,12 +258,51 @@ function displayLeadDataImproved(
       tr.appendChild(th);
       tr.appendChild(td);
 
-      columns[currentTableIndex].appendChild(tr);
-      currentItemCount++;
-
-      if (currentItemCount >= itemsPerTable) {
-        currentTableIndex++;
-        currentItemCount = 0;
+      if (tablecount <= 2) {
+        columns[currentTableIndex].appendChild(tr);
+        currentItemCount++;
+        if (currentItemCount >= itemsPerTable) {
+          currentTableIndex++;
+          currentItemCount = 0;
+        }
+      } else {
+        //populating table by checking the provided arrays for col1, col2, col3
+        if (ColItem1.includes(cond)) {
+          columns[0].appendChild(tr);
+        } else if (ColItem2.includes(cond)) {
+          if (cond === "first_name") {
+            th.textContent = "Name";
+            td.textContent = lead["first_name"] + " " + lead["last_name"];
+          }
+          columns[1].appendChild(tr);
+        } else if (ColItem3.includes(cond)) {
+          //modifing the strings
+          if (cond === "fb_rating") {
+            th.textContent = "FB Stats";
+            td.textContent = lead["first_name"] + " " + lead["last_name"];
+            td.textContent =
+              lead["fb_likes"] +
+              " Likes –" +
+              lead["fb_rating"] +
+              " Rating (from " +
+              lead["fb_reviews"] +
+              " Reviews)";
+          }
+          if (
+            cond === "is_facebook_ads" ||
+            cond === "bing_ads" ||
+            cond === "twitter_ads" ||
+            cond === "linkedin_ads"
+          ) {
+            td.textContent = value === "1" ? "Yes" : "";
+          }
+          if (cond === "is_adwords") {
+            th.textContent = "Google Ads";
+            td.textContent =
+              "is_adwords(" + (value === "1" ? "Yes" : "No") + ")";
+          }
+          columns[2].appendChild(tr);
+        }
       }
     });
 
