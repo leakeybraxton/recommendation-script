@@ -104,7 +104,7 @@ require("../header.php");
         width: 100%;
     }
 
-    
+
     #modalContent table {
         table-layout: fixed;
         width: 100%;
@@ -192,7 +192,8 @@ require("../header.php");
                 }
                 $('#modalContent').html('');
                 $.each(call_history, function(i, v) {
-                    var modalContent2 = displayLeadData(v, false, 'col-12', 1);
+                    // var modalContent2 = displayLeadData(v, false, 'col-12', 1);
+                    var modalContent2 = displayLeadDataImproved(v, false, 'col-12', 1);
                     $('#modalContent').append('<h3 class="text-center mt-3">Call History ' + (i + 1) + '</h3>');
                     $('#modalContent').append(modalContent2);
                 });
@@ -200,7 +201,8 @@ require("../header.php");
             }
 
             function leadDetails() {
-                var modalContent = displayLeadData(structuredClone(rowData), cols, 'col-12', 1);
+                // var modalContent = displayLeadData(structuredClone(rowData), cols, 'col-12', 1);
+                var modalContent = displayLeadDataImproved(structuredClone(rowData), cols, 'col-12', 1);
                 $('#modalContent').html(modalContent);
                 $('#modalContent').prepend('<button class="btn brn-primary my-3" onclick="loadHistory();">View Call History</button>');
             }
