@@ -73,10 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //capture the audio file from the form
-    $audio_file = $_FILES["uploadCall"];  
+    $audio_file = $_FILES["uploadCall"];    
+  
     
     // Allowed file types
     $allowed_types = ["audio/mpeg", "audio/mp3", "audio/wav"];
+    $mimeToExtension = [
+        'audio/mpeg' => '.mp3',
+        'audio/mp3' => '.mp3',
+        'audio/wav' => '.wav'
+    ];
     
     
     $companyNameQuery = "SELECT `company_name` FROM `$tableName` WHERE `id` = $leadId FOR UPDATE";
@@ -86,14 +92,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //authenticate the type of the file
     if (in_array($audio_file["type"], $allowed_types)) {
 
+        $extension = isset($mimeToExtension[$audio_file["type"]]) ? $mimeToExtension[$audio_file["type"]] : '';
+        
         // Move the uploaded file to the server
-        $directory = "public/calls/";
-        $fileName = $companyNameRow['company_name']." - ".time();
-        $target_file = $directory . $fileName . basename($audio_file["name"]);      
+        $directory = "uploads/appointment-setting/";
 
-        move_uploaded_file($audio_file["tmp_name"], $target_file);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        $fileName = time()." - ".$companyNameRow['company_name'];
+        $target_file = $directory . $fileName . $extension ;    
 
-        $updateColumns['call_name'] = $fileName." - ".basename($audio_file["name"]);       
+        move_uploaded_file($audio_file["tmp_name"], $target_file);        
+
+        $updateColumns['call_name'] = $fileName . $extension;       
         
     }
 
