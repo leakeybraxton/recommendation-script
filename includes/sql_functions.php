@@ -112,3 +112,10 @@ function sb_db_query($query, $return = false) {
         return $status;
     }
 }
+
+//function to check if column exists.
+function columnExists($tableName, $column, $SB_CONNECTION) {
+    $queryCheck = "SHOW COLUMNS FROM `$tableName` LIKE '$column'";
+    $resultCheck = $SB_CONNECTION->query($queryCheck);
+    return $resultCheck->num_rows > 0;
+}
