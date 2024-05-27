@@ -11,6 +11,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postData = $_POST;
     $tableColumns = getExistingColumns($tableName);
 
+    $newColumns = [
+        'skipped' => 'VARCHAR(255)',  // Column name => Data type
+        'call_name' => 'VARCHAR(255)'
+    ];
+
+    //function to check if column exists.
+    function columnExists($tableName, $column, $SB_CONNECTION) {
+        $queryCheck = "SHOW COLUMNS FROM `$tableName` LIKE '$column'";
+        $resultCheck = $SB_CONNECTION->query($queryCheck);
+        return $resultCheck->num_rows > 0;
+    }
+
+    //update table if columns missing
+    $columnsAdded = false;
+    foreach ($newColumns as $column => $type) {
+        if (!columnExists($tableName, $column, $SB_CONNECTION)) {
+            $alterTableQuery = "ALTER TABLE `$tableName` ADD `$column` $type";
+            $SB_CONNECTION->query($alterTableQuery);
+            $columnsAdded = true;
+        } 
+    }
+
+    // Freshly fetch table columns if new columns were added
+    if ($columnsAdded) {
+        $tableColumns = getExistingColumns($tableName);
+    }
+
     $leadId = isset($postData['id']) ? intval($postData['id']) : null;
     if ($leadId === null) {
         die('No ID provided.');
