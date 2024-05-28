@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS `leads`;
 CREATE TABLE `leads` (
   `id` int(22) NOT NULL AUTO_INCREMENT,
   `imported_time` int(11) DEFAULT NULL,
+  `hidden` int(1) DEFAULT NULL,
   `picked_up` text DEFAULT NULL,
   `pitched` text DEFAULT NULL,
   `call_end_result` text DEFAULT NULL,
