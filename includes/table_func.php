@@ -1,6 +1,7 @@
 <?php
 $acceptableValues = ['yes', 'not interested', 'not interested / hung up', 'not interested', 'hang up', 'hangup'];
-
+// Set maximum execution time to 800 seconds
+ini_set('max_execution_time', 800);
 function checkValueIfForQueue($value)
 {
     global $acceptableValues;
