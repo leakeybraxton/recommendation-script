@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tableColumns = getExistingColumns($tableName);
 
     $newColumns = [
-        'skipped' => 'VARCHAR(255)',  // Column name => Data type
-        'call_name' => 'VARCHAR(255)'
+        'skipped' => 'TEXT',  // Column name => Data type
+        'call_name' => 'TEXT'
     ];    
 
     //update table if columns missing
