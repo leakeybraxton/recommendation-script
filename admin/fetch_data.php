@@ -5,7 +5,7 @@ require("../includes/table_func.php");
 global $SB_CONNECTION;
 sb_db_connect();
 
-$tableName = 'leads';
+$tableName = 'leads'; 
 
 // Fetch total number of records without any filters
 $totalRecordsQuery = "SELECT COUNT(*) AS count FROM `$tableName`";
@@ -70,3 +70,4 @@ $response = [
 ];
 
 echo json_encode($response);
+?>
