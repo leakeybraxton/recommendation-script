@@ -1,6 +1,5 @@
 <?php
-// $sub_dir = '/' . basename(__DIR__);
-$sub_dir = '';
+$sub_dir = '/' . basename(__DIR__);
 ?>
 <!DOCTYPE html>
 <html lang="en">

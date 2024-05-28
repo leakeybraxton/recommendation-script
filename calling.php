@@ -520,8 +520,7 @@ require("header.php");
     $(document).ready(function() {
         let rowData = <?= json_encode($lead) ?>;
         let call_history = <?= !empty($leadbackup['call_history']) ? $leadbackup['call_history'] : '[]' ?>;
-        var modalContent = displayLeadDataImproved(rowData);
-        // var modalContent = displayLeadData(rowData);
+        var modalContent = displayLeadData(rowData);
         $('#modalContent').html(modalContent);
         $('#modalContent2').append('<h3 class="text-center">Call History</h3>');
 
