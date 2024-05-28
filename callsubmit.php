@@ -73,9 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //capture the audio file from the form
-    $audio_file = $_FILES["uploadCall"];    
+    $audio_file = $_FILES["uploadCall"];     
   
-    
     // Allowed file types
     $allowed_types = ["audio/mpeg", "audio/mp3", "audio/wav"];
     $mimeToExtension = [
@@ -83,31 +82,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'audio/mp3' => '.mp3',
         'audio/wav' => '.wav'
     ];
-    
-    
+
     $companyNameQuery = "SELECT `company_name` FROM `$tableName` WHERE `id` = $leadId FOR UPDATE";
     $companyNameResult = $SB_CONNECTION->query($companyNameQuery);
     $companyNameRow = $companyNameResult->fetch_assoc();    
-   
+    
     //authenticate the type of the file
-    if (in_array($audio_file["type"], $allowed_types)) {
-
+    if (isset($_FILES['uploadCall']) && $_FILES['uploadCall']['error'] == UPLOAD_ERR_OK) {
         $extension = isset($mimeToExtension[$audio_file["type"]]) ? $mimeToExtension[$audio_file["type"]] : '';
+        $tmpFilePath = $_FILES['uploadCall']['tmp_name'];
+        $fileName = basename($_FILES['uploadCall']['name']);
+        $uploadDir = 'uploads/appointment-setting/';
+        $rename = trim(strval($companyNameRow['company_name']));
         
-        // Move the uploaded file to the server
-        $directory = "uploads/appointment-setting/";
+        $destination = $uploadDir . $rename . $extension;
 
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+        // Check if the upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
         }
-        $fileName = time()." - ".$companyNameRow['company_name'];
-        $target_file = $directory . $fileName . $extension ;    
 
-        move_uploaded_file($audio_file["tmp_name"], $target_file);        
+        // Check if the upload directory is writable
+        if (!is_writable($uploadDir)) {
+            
+            print_r("Upload directory is not writable.");
+            exit;
+        }
 
-        $updateColumns['call_name'] = $fileName . $extension;       
-        
+        // Move the uploaded file
+        move_uploaded_file($tmpFilePath, $destination);
+
+        $updateColumns['call_name'] = $rename . $extension;
     }
+    
 
     if(!isset($postData['skipped'])){
         $updateColumns['locked_status'] = 2; //disable load again
