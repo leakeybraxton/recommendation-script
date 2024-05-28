@@ -43,7 +43,7 @@ function createTable($tableName, $columns)
     global $SB_CONNECTION;
     sb_db_connect();
     $columnDefinitions = array_map(function ($column) {
-        return "`$column` VARCHAR(255) DEFAULT NULL";
+        return "`$column` TEXT(255) DEFAULT NULL";
     }, $columns);
     $columnDefinitions = implode(', ', $columnDefinitions);
     $query = "CREATE TABLE `$tableName` (id INT AUTO_INCREMENT PRIMARY KEY, $columnDefinitions)"; // make all column defualts null
@@ -56,7 +56,7 @@ function addMissingColumns($tableName, $columns, $existingColumns)
     sb_db_connect();
     $newColumns = array_diff($columns, $existingColumns);
     foreach ($newColumns as $column) {
-        $query = "ALTER TABLE `$tableName` ADD `$column` VARCHAR(255) DEFAULT NULL"; // make all column defualts null
+        $query = "ALTER TABLE `$tableName` ADD `$column` TEXT(255) DEFAULT NULL"; // make all column defualts null
         $SB_CONNECTION->query($query);
     }
 }
