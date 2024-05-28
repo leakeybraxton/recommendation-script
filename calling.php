@@ -8,6 +8,8 @@ sb_db_connect();
 if (isset($_GET['next'])) {
     unset($_SESSION['loaded_lead_id']);
 }
+
+
 $tableName = 'leads';
 $lead = false;
 if (isset($_SESSION['loaded_lead_id'])) {
@@ -102,7 +104,7 @@ require("header.php");
             <div class="row" id="schedule">
                 <div class="col-md-7 ps-4">
                     <div class="container p-5 caller">
-                        <form class="needs-validation" novalidate method="POST" action="callsubmit.php">
+                        <form class="needs-validation" novalidate method="POST" action="callsubmit.php" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="<?= $lead['id'] ?>">
                             <div class="form-group ">
                                 <label for="appointment_setter"><u>Appointment Setter</u> *</label>
@@ -114,18 +116,18 @@ require("header.php");
                             <hr class="my-5">
                             <div class="form-group">
                                 <label for="introduction"><u>Introduction</u> *</label>
-                                <p>Hi this is &lt;name&gt;, Am I talking to <strong>[owner_firstname]</strong>? How is your day going so far?</p>
-                                <p>Great! I'm calling in from Relax Reach, a company that specializes in helping <strong>[business_category]</strong> businesses just like yours get more customers.</p>
+                                <p>Hi this is &lt;name&gt;, Am I talking to <strong><?= $lead['name'] ?></strong>? How is your day going so far?</p>
+                                <p>Great! I'm calling in from Relax Reach, a company that specializes in helping <strong><?= $lead['category'] ?></strong> businesses just like yours get more customers.</p>
                                 <p>Is that something you would be interested in?</p>
                             </div>
 
                             <div class="form-group mb-5 mt-3">
                                 <label><u>Objection</u></label>
                                 <p><strong>Not interested</strong> – Explain our lead magnet and offer to send them to them. Do not ask for a meeting in this email. Only ask for a quick reception reply on the phone and in the email - to start a conversation.</p>
-                                <p><strong>Busy</strong> – I won't take up too much of your time, but I wanted to connect because I noticed something intriguing about <strong>[company_name]</strong> that caught my attention. This is something that can benefit your business in the future. Do you have a minute or a few? <strong>No:</strong> When would be a good time to call you back?</p>
+                                <p><strong>Busy</strong> – I won't take up too much of your time, but I wanted to connect because I noticed something intriguing about <strong><?= $lead['company_name'] ?></strong> that caught my attention. This is something that can benefit your business in the future. Do you have a minute or a few? <strong>No:</strong> When would be a good time to call you back?</p>
                                 <p><strong>Not the decision-maker</strong> – Can you put me through?</p>
                                 <p><strong>Decision-maker busy</strong> – It won't take much time.</p>
-                                <p><strong>What is it about?</strong> – We noticed that many <strong>[business_category]</strong> in <strong>[city]</strong> are struggling because they don't get enough new customers into their business. I'd like to talk with <strong>[owner_firstname]</strong> about how we can help out with this for <strong>[company_name]</strong>.</p>
+                                <p><strong>What is it about?</strong> – We noticed that many <strong><?= $lead['category'] ?></strong> in <strong><?= $lead['city'] ?></strong> are struggling because they don't get enough new customers into their business. I'd like to talk with <strong><?= $lead['name'] ?></strong> about how we can help out with this for <strong><?= $lead['company_name'] ?></strong>.</p>
                             </div>
 
                             <div class="form-group mb-5">
@@ -165,7 +167,7 @@ require("header.php");
                             <hr class="my-5">
                             <div class="form-group">
                                 <label for="tellMeMore"><u>Ok. / Tell me more about it. / How does that help me?</u></label>
-                                <p>From our research, it seems like many <strong>[business_category]</strong> in <strong>[city]</strong> are struggling when it comes to getting new customers into their business. If you could take on a few new customers as well, then I'd like to have a chat about how we can help out with this for <strong>[company_name]</strong>.</p>
+                                <p>From our research, it seems like many <strong><?= $lead['category'] ?></strong> in <strong><?= $lead['city'] ?></strong> are struggling when it comes to getting new customers into their business. If you could take on a few new customers as well, then I'd like to have a chat about how we can help out with this for <strong><?= $lead['company_name'] ?></strong>.</p>
                                 <p class="mt-5"><u>Objection</u></p>
                                 <p><strong>Not really:</strong> Okay, are you fully booked, or could you take on a few more customers per week?</p>
                                 <p><strong>We're fully booked:</strong> Okay, that sounds amazing for you! And would you like to get customers who pay more?</p>
@@ -199,9 +201,9 @@ require("header.php");
                             <hr class="my-5">
                             <div class="form-group">
                                 <label><u>Interested</u></label>
-                                <p>Our company is called Relax Reach, and we specialize in getting customers for <strong>[business_category]</strong> businesses just like yours.
+                                <p>Our company is called Relax Reach, and we specialize in getting customers for <strong><?= $lead['category'] ?></strong> businesses just like yours.
                                     <br><br>
-                                    What we do is we create ads on social media for people in your area that are interested in <strong>[business service]</strong> and get them to call in and book a session with you.
+                                    What we do is we create ads on social media for people in your area that are interested in <strong><?= $lead['category'] ?></strong> and get them to call in and book a session with you.
                                     <br><br>
                                     So, if you have a few more minutes, then I’ll tell you a little bit about how our agency operates, then I’ll ask some questions, so I can understand the nuances of your business, then we’ll see whether it’s worth scheduling in a longer call.
 
@@ -225,7 +227,7 @@ require("header.php");
 
                             <hr class="my-5">
                             <div class="form-group">
-                                <label for="conversationReason" class="mb-3"><strong>[owner_firstname]</strong>, you just decided to take the time out of your busy schedule today to have this conversation with me. Why is that?</label>
+                                <label for="conversationReason" class="mb-3"><strong><?= $lead['name'] ?></strong>, you just decided to take the time out of your busy schedule today to have this conversation with me. Why is that?</label>
                                 <p style="font-size: small;">
                                     < Wait for reply, show gratitude and confirm relevance>
                                 </p>
@@ -268,7 +270,7 @@ require("header.php");
 
                             <hr class="my-5">
                             <div class="form-group">
-                                <label for="monthlyRevenue"><u>How much revenue is <strong>[company_name]</strong> currently doing per month?</u></label>
+                                <label for="monthlyRevenue"><u>How much revenue is <strong><?= $lead['company_name'] ?></strong> currently doing per month?</u></label>
                                 <input type="text" class="form-control" id="monthlyRevenue" name="monthlyRevenue">
                             </div>
 
@@ -362,10 +364,14 @@ require("header.php");
                                 <small class="form-text text-muted text-light">Automatically inserted, please confirm.</small>
                                 <input type="email" class="form-control" id="contactEmail" placeholder="Enter email" name="contactEmail" value="<?= $leadbackup['email'] ?>">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="contactPhone" class="mb-0">Contact Person Phone Number</label>
                                 <small class="form-text text-muted text-light">Automatically inserted, please confirm.</small>
                                 <input type="text" class="form-control" id="contactPhone" placeholder="Enter phone number" name="contactPhone" value="<?= $leadbackup['phone_number'] ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="uploadCall">Call Upload :      </label>
+                                <input type="file" name="uploadCall" id="uploadCall">
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Submit</button>
                         </form>
@@ -373,6 +379,7 @@ require("header.php");
 
                     <br>
                     <p class="text-center">Step 2: Rename your successful call to "Company Name - Date" and upload it here: <a href="https://drive.google.com/open?id=1--9KWLaLemCZgp5QA7JAe0ja5BwryAd8" target="_blank">Recordings</a></p><br>
+                    
                 </div>
 
                 <div class="col-md-5 pe-4">
@@ -501,6 +508,13 @@ require("header.php");
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
+    .skip-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+            
+        }
 </style>
 <script>
     $(document).ready(function() {
@@ -546,6 +560,8 @@ require("header.php");
             $('#modalContent2').append(table);
         }
 
+        // Add a button to trigger pop up modal onclick
+        $('#modalContent2').append('<button type="button" class="btn btn-primary" onclick="showSkipModal()">Skip Lead</button>');
 
         $('form').on('submit', function(event) {
             const form = $(this);
@@ -560,6 +576,13 @@ require("header.php");
                 $('#picked_upOtherInput').show();
             } else {
                 $('#picked_upOtherInput').hide().val('');
+            }
+        });
+        $('input[id="skipped"]').change(function() {
+            if ($(this).val() === 'Other') {
+                $('#skipOtherInput').show();
+            } else {
+                $('#skipOtherInput').hide().val('');
             }
         });
 
@@ -585,5 +608,46 @@ require("header.php");
             }
         });
     });
+
+    //function to display modal
+    function showSkipModal() {
+        $('#skipModal').modal('show');
+    }
+
+    
 </script>
+
+
+    <!-- Skip Lead Modal -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<?= $sub_dir ?>/admin/script.js"></script>
+<div class="modal fade" id="skipModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Skip Lead</h4> &nbsp;&nbsp;
+                
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="transfer" name="transfer" action="callsubmit.php">                        
+                    
+                    <input type="hidden" name="id" value="<?= $lead['id'] ?>">
+                    <div class="form-group">
+                        <label>Reason for Skipping</label><br>
+                        <input type="radio" name="skipped" id="skipped" value="Lead Not in Target Market"> Lead Not in Target Market <br>                                                        
+                        <input type="radio" name="skipped" id="skipped" value="Other"> Other <br>                                                        
+                        <textarea class="form-control mt-2" id="skipOtherInput" name="skipOtherInput" style="display: none;" width="100" placeholder="Specify (e.g. Call back at 3pm on June 7, 2024)"></textarea>
+                    </div>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="Transfer" name="Transfer" class="btn btn-primary btn-sm rounded-pill">Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- End of modal -->
+
 <?php require('footer.php') ?>

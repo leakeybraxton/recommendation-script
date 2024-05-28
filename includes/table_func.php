@@ -1,6 +1,7 @@
 <?php
 $acceptableValues = ['yes', 'not interested', 'not interested / hung up', 'not interested', 'hang up', 'hangup'];
-
+// Set maximum execution time to 800 seconds
+ini_set('max_execution_time', 800);
 function checkValueIfForQueue($value)
 {
     global $acceptableValues;
@@ -42,10 +43,10 @@ function createTable($tableName, $columns)
     global $SB_CONNECTION;
     sb_db_connect();
     $columnDefinitions = array_map(function ($column) {
-        return "`$column` VARCHAR(255)";
+        return "`$column` TEXT(255) DEFAULT NULL";
     }, $columns);
     $columnDefinitions = implode(', ', $columnDefinitions);
-    $query = "CREATE TABLE `$tableName` (id INT AUTO_INCREMENT PRIMARY KEY, $columnDefinitions)";
+    $query = "CREATE TABLE `$tableName` (id INT AUTO_INCREMENT PRIMARY KEY, $columnDefinitions)"; // make all column defualts null
     $SB_CONNECTION->query($query);
 }
 
@@ -55,7 +56,7 @@ function addMissingColumns($tableName, $columns, $existingColumns)
     sb_db_connect();
     $newColumns = array_diff($columns, $existingColumns);
     foreach ($newColumns as $column) {
-        $query = "ALTER TABLE `$tableName` ADD `$column` VARCHAR(255)";
+        $query = "ALTER TABLE `$tableName` ADD `$column` TEXT(255) DEFAULT NULL"; // make all column defualts null
         $SB_CONNECTION->query($query);
     }
 }
@@ -66,16 +67,32 @@ function insertData($tableName, $data)
     $columns = array_keys($data[0]);
     $columnsList = implode('`, `', $columns);
     $i = 0;
+    // var_dump($columnsList);
     foreach ($data as $row) {
         try {
-            $valuesList = implode("', '", array_map([$SB_CONNECTION, 'real_escape_string'], $row));
+            $escapedRow = array_map([$SB_CONNECTION, 'real_escape_string'], $row);
+            
+            // Filter out empty values
+            $filteredRow = array_filter($escapedRow, function ($value) {
+                return $value !== '';
+            });
+            
+            // Construct the columns list and values list for the query
+            $columnsList = implode('`, `', array_keys($filteredRow));
+            $valuesList = implode("', '", $filteredRow);
+            
             $query = "INSERT INTO `$tableName` (`$columnsList`) VALUES ('$valuesList')";
             if (!$SB_CONNECTION->query($query)) {
                 throw new Exception("Error executing query: " . $SB_CONNECTION->error);
             }
             $i++;
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e) {
+            // Handle the error (e.g., log it, display a message)
+            echo $e->getMessage();
         }
-    }
+
+    
+}
     return $i;
 }
