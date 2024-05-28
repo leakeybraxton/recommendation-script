@@ -66,7 +66,13 @@ if (isset($_POST['upload']) && isset($_FILES['csvFiles'])) {
                         $data[] = $d;
                     }
                 }
+                //Add new columns locked_status and imported_time if they are missing form the database table
+                $newcolumn = ['locked_status','imported_time'];
+                $existingColumns = getExistingColumns($tableName);
+                addMissingColumns($tableName, $newcolumn, $existingColumns);
                 fclose($handle);
+
+
 
                 $count = (int) insertData($tableName, $data);
                 $totalImported += $count;
