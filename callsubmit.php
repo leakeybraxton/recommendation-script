@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Move the uploaded file
         move_uploaded_file($tmpFilePath, $destination);
 
-        $updateColumns['call_name'] = $rename . $extension;
+        $updateColumns['call_name'] = date('Ymd')."-". $rename .  $extension;
     }
     
 
