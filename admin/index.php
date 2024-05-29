@@ -57,7 +57,7 @@ if (isset($_POST['upload']) && isset($_FILES['csvFiles'])) {
                             (isset($d['picked_up']) && checkValueIfForQueue($d['picked_up'])) ||
                             (isset($d['call_end_result']) && checkValueIfForQueue($d['call_end_result']))
                         ) {
-                            $d['locked_status'] = 2; //do not call again if not intarested/already called
+                            $d['locked_status'] = 2; //do not call again if not interested/already called
                         }
                         $d['imported_time'] = time();
                         if (isset($d['phone_number']) && strlen($d['phone_number']) == 10) {
@@ -66,7 +66,13 @@ if (isset($_POST['upload']) && isset($_FILES['csvFiles'])) {
                         $data[] = $d;
                     }
                 }
+                //Add new columns locked_status and imported_time if they are missing form the database table
+                $newcolumn = ['locked_status','imported_time'];
+                $existingColumns = getExistingColumns($tableName);
+                addMissingColumns($tableName, $newcolumn, $existingColumns);
                 fclose($handle);
+
+
 
                 $count = (int) insertData($tableName, $data);
                 $totalImported += $count;
@@ -104,7 +110,7 @@ require("../header.php");
         width: 100%;
     }
 
-    
+
     #modalContent table {
         table-layout: fixed;
         width: 100%;
@@ -126,6 +132,24 @@ require("../header.php");
         // Redirect to the index page
         window.location.href = '<?= $sub_dir ?>/index.php'; // Change the URL to your index page
     });
+
+    // Function to hide selected rows
+    function hideSelectedRows() {
+        $('#dataTable tbody tr').each(function() {
+            if ($(this).find('input[type="checkbox"]').prop('checked')) {
+                $(this).addClass('hidden-row');
+            }
+        });
+    }
+
+    // Function to toggle visibility of hidden rows
+    function toggleHiddenRows() {
+        if ($('#show-hidden').prop('checked')) {
+            $('#dataTable tbody tr').not('.hidden-row').hide();
+        } else {
+            $('#dataTable tbody tr').show();
+        }
+    }
 </script>
 
 <div style="background-color:#f5f5f5">
@@ -144,21 +168,47 @@ require("../header.php");
         <table id="dataTable" class="display">
             <thead>
                 <tr>
+                    <th><input type="checkbox" id="select-all" onchange="selectAll()"></th> <!-- Checkbox column -->
                     <?php
                     $existingColumns = getExistingColumns($tableName);
                     foreach ($existingColumns as $col) {
-                        if ('call_history' == $col) {
-                            echo "<th data-hide=\"true\">" . $col . "</th>";
-                        } else {
-                            echo "<th>" . $col . "</th>";
+                        if ($col != 'imported_time') { // Exclude the "imported_time" column
+                            if ($col == 'id') { // Check if it's the ID column
+                                echo "<th>Hidden</th>"; // Add column header for hidden
+                                echo "<th>" . $col . "</th>"; // Add ID column header
+                            } else {
+                                echo "<th>" . $col . "</th>"; // Add other column headers
+                            }
                         }
                     }
                     ?>
                 </tr>
             </thead>
             <tbody>
+                <?php
+                // Assuming $data is your dataset
+                foreach ($data as $row) {
+                    echo "<tr>";
+                    echo "<td><input type='checkbox'></td>"; // Checkbox for selection
+                    foreach ($row as $key => $value) {
+                        if ($key != 'imported_time') { // Exclude the "imported_time" column
+                            if ($key == 'id') { // Check if it's the ID column
+                                echo "<td>Hidden</td>"; // Hidden column data
+                                echo "<td>" . $value . "</td>"; // ID column data
+                            } else {
+                                echo "<td>" . $value . "</td>"; // Other column data
+                            }
+                        }
+                    }
+                    echo "</tr>";
+                }
+                ?>
             </tbody>
         </table>
+        <button type="button" onclick="hideSelectedRows();" class="btn btn-danger mb-2 ml-2">Hide Selected</button>
+
+        <input type="checkbox" id="show-hidden" onchange="toggleHiddenRows();" class="ml-2">
+        <label for="show-hidden">Show Only Hidden</label>
         <script>
             let cols = <?= json_encode($existingColumns) ?>;
             var rowData, dataTable;
@@ -225,6 +275,9 @@ require("../header.php");
                     "ajax": {
                         "url": "<?= $sub_dir ?>/admin/fetch_data.php",
                         "type": "POST" // Specify POST request type
+                    },
+                    "createdRow": function(row, data, dataIndex) {
+                        $(row).prepend('<td><input type="checkbox"></td>'); // Add checkbox to each row
                     }
                 });
                 $('#dataTable tbody').on('click', 'tr', function() {
