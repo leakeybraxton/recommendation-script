@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uploadDir = 'uploads/appointment-setting/';
         $rename = trim(strval($companyNameRow['company_name']));
         
-        $destination = $uploadDir . $rename . $extension;
+        $destination = $uploadDir  . date('Ymd')."-". $rename . $extension;
 
         // Check if the upload directory exists
         if (!is_dir($uploadDir)) {

@@ -116,7 +116,7 @@ require("header.php");
                             <hr class="my-5">
                             <div class="form-group">
                                 <label for="introduction"><u>Introduction</u> *</label>
-                                <p>Hi this is &lt;name&gt;, Am I talking to <strong><?= $lead['name'] ?></strong>? How is your day going so far?</p>
+                                <p>Hi this is &lt;name&gt;, Am I talking to <strong><?= $lead['first_name'] ?></strong>? How is your day going so far?</p>
                                 <p>Great! I'm calling in from Relax Reach, a company that specializes in helping <strong><?= $lead['category'] ?></strong> businesses just like yours get more customers.</p>
                                 <p>Is that something you would be interested in?</p>
                             </div>
